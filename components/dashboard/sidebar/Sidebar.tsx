@@ -1,10 +1,28 @@
 const navigation = [
-  "Dashboard",
-  "Prompts",
-  "Folders",
-  "Favorites",
-  "Templates",
-  "Settings",
+  {
+    name: "Dashboard",
+    active: true,
+  },
+  {
+    name: "Prompts",
+    active: false,
+  },
+  {
+    name: "Folders",
+    active: false,
+  },
+  {
+    name: "Favorites",
+    active: false,
+  },
+  {
+    name: "Templates",
+    active: false,
+  },
+  {
+    name: "Settings",
+    active: false,
+  },
 ];
 
 export default function Sidebar() {
@@ -19,9 +37,15 @@ export default function Sidebar() {
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
           {navigation.map((item) => (
-            <li key={item}>
-              <button className="w-full rounded-xl px-4 py-3 text-left text-slate-300 transition hover:bg-slate-800 hover:text-white">
-                {item}
+            <li key={item.name}>
+              <button
+                className={`w-full rounded-xl px-4 py-3 text-left transition ${
+                  item.active
+                    ? "bg-indigo-600 text-white"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                {item.name}
               </button>
             </li>
           ))}
