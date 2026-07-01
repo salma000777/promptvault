@@ -2,7 +2,7 @@
 
 import { getSupabase } from "@/services/prompt.service";
 
-export async function getPrompts() {
+export async function deletePrompt(id: string) {
   const supabase = await getSupabase();
 
   const {
@@ -10,18 +10,16 @@ export async function getPrompts() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return [];
+    throw new Error("Unauthorized");
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("prompts")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
 
   if (error) {
     throw new Error(error.message);
   }
-
-  return data;
 }
