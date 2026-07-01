@@ -6,13 +6,11 @@ export default async function PromptGrid() {
 
   if (!prompts || prompts.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-800 bg-slate-900 p-10 text-center">
-        <h2 className="text-2xl font-bold">
-          No prompts yet
-        </h2>
+      <div className="rounded-2xl border border-slate-800 bg-slate-900 p-12 text-center">
+        <h2 className="text-2xl font-bold">No prompts yet</h2>
 
         <p className="mt-3 text-slate-400">
-          Create your first prompt.
+          Create your first prompt to start building your AI library.
         </p>
       </div>
     );
@@ -23,8 +21,11 @@ export default async function PromptGrid() {
       {prompts.map((prompt) => (
         <PromptCard
           key={prompt.id}
+          id={prompt.id}
           title={prompt.title}
           category={prompt.category}
+          content={prompt.content}
+          favorite={prompt.favorite}
         />
       ))}
     </div>
