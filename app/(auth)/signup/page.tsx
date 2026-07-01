@@ -1,19 +1,19 @@
-import { signIn } from "@/actions/auth";
+import { signUp } from "@/actions/auth";
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <>
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-white">
-          Welcome back
+          Create your account
         </h1>
 
         <p className="mt-2 text-slate-400">
-          Sign in to your PromptVault account.
+          Join PromptVault today.
         </p>
       </div>
 
-      <form action={signIn} className="space-y-5">
+      <form action={signUp} className="space-y-5">
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-300">
             Email
@@ -22,8 +22,8 @@ export default function LoginPage() {
           <input
             name="email"
             type="email"
-            placeholder="you@example.com"
             required
+            placeholder="you@example.com"
             className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-indigo-500"
           />
         </div>
@@ -36,8 +36,8 @@ export default function LoginPage() {
           <input
             name="password"
             type="password"
-            placeholder="••••••••"
             required
+            placeholder="••••••••"
             className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-indigo-500"
           />
         </div>
@@ -46,7 +46,7 @@ export default function LoginPage() {
           type="submit"
           className="w-full rounded-xl bg-indigo-600 py-3 font-semibold transition hover:bg-indigo-500"
         >
-          Sign In
+          Create Account
         </button>
       </form>
     </>
