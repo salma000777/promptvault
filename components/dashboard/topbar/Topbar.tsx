@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SearchBar from "./SearchBar";
 import UserMenu from "./UserMenu";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
@@ -7,7 +8,6 @@ export default function Topbar() {
     <header className="flex h-20 items-center justify-between border-b border-slate-800 bg-slate-950 px-8">
       <div className="flex items-center gap-6">
         <WorkspaceSwitcher />
-
         <SearchBar />
       </div>
 
@@ -16,9 +16,12 @@ export default function Topbar() {
           🔔
         </button>
 
-        <button className="rounded-xl bg-indigo-600 px-5 py-3 font-semibold hover:bg-indigo-500">
+        <Link
+          href="/prompts/new"
+          className="rounded-xl bg-indigo-600 px-5 py-3 font-semibold transition hover:bg-indigo-500"
+        >
           + New Prompt
-        </button>
+        </Link>
 
         <UserMenu />
       </div>

@@ -1,28 +1,43 @@
-import PromptGrid from "@/components/dashboard/prompts/PromptGrid";
-import PromptSearch from "@/components/dashboard/prompts/PromptSearch";
+import Link from "next/link";
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold">
-            Prompt Library
-          </h1>
+    <main className="mx-auto flex max-w-6xl flex-col gap-8 p-8">
+      <h1 className="text-4xl font-bold">
+        Welcome back 👋
+      </h1>
 
-          <p className="mt-2 text-slate-400">
-            Manage all your prompts in one place.
+      <p className="text-slate-400">
+        Ready to continue building your AI workspace?
+      </p>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Link
+          href="/prompts"
+          className="rounded-3xl border border-slate-800 bg-slate-900 p-8 transition hover:border-indigo-500"
+        >
+          <h2 className="text-2xl font-bold">
+            📚 Prompt Library
+          </h2>
+
+          <p className="mt-4 text-slate-400">
+            Browse, edit and organize all your prompts.
           </p>
-        </div>
+        </Link>
 
-        <button className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold hover:bg-indigo-500">
-          + Create Prompt
-        </button>
+        <Link
+          href="/prompts/new"
+          className="rounded-3xl border border-slate-800 bg-slate-900 p-8 transition hover:border-indigo-500"
+        >
+          <h2 className="text-2xl font-bold">
+            ✨ Create Prompt
+          </h2>
+
+          <p className="mt-4 text-slate-400">
+            Start writing a brand-new prompt.
+          </p>
+        </Link>
       </div>
-
-      <PromptSearch />
-
-      <PromptGrid />
-    </div>
+    </main>
   );
 }

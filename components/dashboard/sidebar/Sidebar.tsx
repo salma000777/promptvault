@@ -1,26 +1,34 @@
+import Link from "next/link";
+
 const navigation = [
   {
     name: "Dashboard",
-    active: true,
-  },
-  {
-    name: "Prompts",
+    href: "/dashboard",
     active: false,
   },
   {
+    name: "Prompts",
+    href: "/prompts",
+    active: true,
+  },
+  {
     name: "Folders",
+    href: "#",
     active: false,
   },
   {
     name: "Favorites",
+    href: "#",
     active: false,
   },
   {
     name: "Templates",
+    href: "#",
     active: false,
   },
   {
     name: "Settings",
+    href: "#",
     active: false,
   },
 ];
@@ -38,15 +46,16 @@ export default function Sidebar() {
         <ul className="space-y-2">
           {navigation.map((item) => (
             <li key={item.name}>
-              <button
-                className={`w-full rounded-xl px-4 py-3 text-left transition ${
+              <Link
+                href={item.href}
+                className={`block w-full rounded-xl px-4 py-3 text-left transition ${
                   item.active
                     ? "bg-indigo-600 text-white"
                     : "text-slate-300 hover:bg-slate-800 hover:text-white"
                 }`}
               >
                 {item.name}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
