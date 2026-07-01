@@ -1,32 +1,28 @@
-import PromptGrid from "@/components/dashboard/prompts/PromptGrid";
-import PromptSearch from "@/components/dashboard/prompts/PromptSearch";
-import Link from "next/link";
-
-export default function PromptsPage() {
+export default function NewPromptPage() {
   return (
-    <main className="mx-auto flex max-w-7xl flex-col gap-8 p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold">
-            Prompt Library
-          </h1>
+    <main className="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <h1 className="text-4xl font-bold">
+        Create Prompt
+      </h1>
 
-          <p className="mt-2 text-slate-400">
-            Browse and manage all your prompts.
-          </p>
-        </div>
+      <input
+        placeholder="Prompt title"
+        className="rounded-xl border border-slate-700 bg-slate-900 p-4"
+      />
 
-        <Link
-          href="/prompts/new"
-          className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold hover:bg-indigo-500"
-        >
-          + Create Prompt
-        </Link>
-      </div>
+      <input
+        placeholder="Category"
+        className="rounded-xl border border-slate-700 bg-slate-900 p-4"
+      />
 
-      <PromptSearch />
+      <textarea
+        placeholder="Write your prompt..."
+        className="min-h-[350px] rounded-xl border border-slate-700 bg-slate-900 p-4"
+      />
 
-      <PromptGrid />
+      <button className="rounded-xl bg-indigo-600 py-4 font-semibold hover:bg-indigo-500">
+        Save Prompt
+      </button>
     </main>
   );
 }
