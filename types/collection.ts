@@ -1,0 +1,14 @@
+export type Collection = {
+  id: string;
+  user_id: string;
+  name: string;
+  color: string;
+  created_at: string;
+};
+
+export type CollectionWithCount = {
+  id: string;
+  name: string;
+  color: string;
+  promptCount: number;
+};
