@@ -208,3 +208,71 @@ export async function toggleFavorite(
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/prompts");
 }
+
+export async function duplicatePrompt(
+  id: string
+) {
+  const { supabase, user } =
+    await getAuthenticatedUser();
+
+  const {
+    data: originalPrompt,
+    error: fetchError,
+  } = await supabase
+    .from("prompts")
+    .select(
+      "title, content, category, collection_id"
+    )
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (fetchError) {
+    console.error(
+      "Fetch prompt for duplication error:",
+      fetchError
+    );
+
+    redirect(
+      `/dashboard/prompts?error=${encodeURIComponent(
+        fetchError.message
+      )}`
+    );
+  }
+
+  if (!originalPrompt) {
+    redirect(
+      "/dashboard/prompts?error=Prompt%20not%20found"
+    );
+  }
+
+  const { error: duplicateError } =
+    await supabase
+      .from("prompts")
+      .insert({
+        user_id: user.id,
+        title: `${originalPrompt.title} (Copy)`,
+        content: originalPrompt.content,
+        category:
+          originalPrompt.category || "General",
+        collection_id:
+          originalPrompt.collection_id,
+        favorite: false,
+      });
+
+  if (duplicateError) {
+    console.error(
+      "Duplicate prompt error:",
+      duplicateError
+    );
+
+    redirect(
+      `/dashboard/prompts?error=${encodeURIComponent(
+        duplicateError.message
+      )}`
+    );
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/prompts");
+}

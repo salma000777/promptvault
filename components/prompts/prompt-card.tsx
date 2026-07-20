@@ -1,5 +1,6 @@
 import {
   deletePrompt,
+  duplicatePrompt,
   toggleFavorite,
 } from "@/actions/prompts";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Copy,
   Edit3,
   Heart,
   Trash2,
@@ -39,6 +41,9 @@ export function PromptCard({
       prompt.id,
       !prompt.favorite
     );
+
+  const duplicateAction =
+    duplicatePrompt.bind(null, prompt.id);
 
   const deleteAction =
     deletePrompt.bind(null, prompt.id);
@@ -101,6 +106,18 @@ export function PromptCard({
         </p>
 
         <div className="flex items-center gap-1">
+          <form action={duplicateAction}>
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              title="Duplicate prompt"
+              className="text-muted-foreground"
+            >
+              <Copy className="size-4" />
+            </Button>
+          </form>
+
           <Link
             href={`/dashboard/prompts/${prompt.id}/edit`}
             className="inline-flex size-9 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
