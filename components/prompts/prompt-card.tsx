@@ -4,17 +4,18 @@ import {
   toggleFavorite,
 } from "@/actions/prompts";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Copy,
   Edit3,
   Heart,
+  MoreHorizontal,
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -35,110 +36,124 @@ type PromptCardProps = {
 export function PromptCard({
   prompt,
 }: PromptCardProps) {
-  const favoriteAction =
-    toggleFavorite.bind(
-      null,
-      prompt.id,
-      !prompt.favorite
-    );
+  const favoriteAction = toggleFavorite.bind(
+    null,
+    prompt.id,
+    !prompt.favorite
+  );
 
-  const duplicateAction =
-    duplicatePrompt.bind(null, prompt.id);
+  const duplicateAction = duplicatePrompt.bind(
+    null,
+    prompt.id
+  );
 
-  const deleteAction =
-    deletePrompt.bind(null, prompt.id);
+  const deleteAction = deletePrompt.bind(
+    null,
+    prompt.id
+  );
 
-  const createdDate =
-    new Intl.DateTimeFormat("en", {
-      day: "numeric",
+  const createdDate = new Intl.DateTimeFormat(
+    "en",
+    {
       month: "short",
+      day: "numeric",
       year: "numeric",
-    }).format(
-      new Date(prompt.created_at)
-    );
+    }
+  ).format(new Date(prompt.created_at));
 
   return (
-    <Card className="flex h-full flex-col transition hover:-translate-y-1 hover:shadow-lg">
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              {prompt.category}
-            </span>
+    <Card className="group flex h-full flex-col rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
+      <div className="flex items-start justify-between gap-4 p-6 pb-4">
+        <div className="min-w-0 flex-1">
+          <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+            {prompt.category}
+          </span>
 
-            <CardTitle className="mt-4 line-clamp-2 text-xl">
-              {prompt.title}
-            </CardTitle>
-          </div>
-
-          <form action={favoriteAction}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="icon"
-              title={
-                prompt.favorite
-                  ? "Remove from favorites"
-                  : "Add to favorites"
-              }
-            >
-              <Heart
-                className={`size-5 ${
-                  prompt.favorite
-                    ? "fill-current text-red-500"
-                    : "text-muted-foreground"
-                }`}
-              />
-            </Button>
-          </form>
+          <h3 className="mt-3 line-clamp-2 text-xl font-semibold tracking-tight">
+            {prompt.title}
+          </h3>
         </div>
-      </CardHeader>
 
-      <CardContent className="flex-1">
-        <p className="line-clamp-5 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+        <form action={favoriteAction}>
+          <Button
+            type="submit"
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            title={
+              prompt.favorite
+                ? "Remove from favorites"
+                : "Add to favorites"
+            }
+          >
+            <Heart
+              className={
+                prompt.favorite
+                  ? "size-5 fill-red-500 text-red-500"
+                  : "size-5 text-muted-foreground transition hover:text-red-500"
+              }
+            />
+          </Button>
+        </form>
+      </div>
+
+      <div className="flex-1 px-6">
+        <p className="line-clamp-6 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
           {prompt.content}
         </p>
-      </CardContent>
+      </div>
 
-      <CardFooter className="flex items-center justify-between gap-3 border-t pt-5">
-        <p className="text-xs text-muted-foreground">
+      <div className="mt-6 flex items-center justify-between px-6 pb-6">
+        <span className="text-xs text-muted-foreground">
           {createdDate}
-        </p>
+        </span>
 
-        <div className="flex items-center gap-1">
-          <form action={duplicateAction}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="icon"
-              title="Duplicate prompt"
-              className="text-muted-foreground"
-            >
-              <Copy className="size-4" />
-            </Button>
-          </form>
-
-          <Link
-            href={`/dashboard/prompts/${prompt.id}/edit`}
-            className="inline-flex size-9 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
-            title="Edit prompt"
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground opacity-100 transition hover:bg-muted hover:text-foreground sm:opacity-0 sm:group-hover:opacity-100"
+            aria-label={`Open actions for ${prompt.title}`}
           >
-            <Edit3 className="size-4" />
-          </Link>
+            <MoreHorizontal className="size-4" />
+          </DropdownMenuTrigger>
 
-          <form action={deleteAction}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="icon"
-              title="Delete prompt"
-              className="text-muted-foreground hover:text-destructive"
+          <DropdownMenuContent
+            align="end"
+            className="w-44"
+          >
+            <DropdownMenuItem
+              render={
+                <Link
+                  href={`/dashboard/prompts/${prompt.id}/edit`}
+                />
+              }
             >
-              <Trash2 className="size-4" />
-            </Button>
-          </form>
-        </div>
-      </CardFooter>
+              <Edit3 className="size-4" />
+              Edit
+            </DropdownMenuItem>
+
+            <form action={duplicateAction}>
+              <DropdownMenuItem
+                render={<button type="submit" />}
+                className="w-full"
+              >
+                <Copy className="size-4" />
+                Duplicate
+              </DropdownMenuItem>
+            </form>
+
+            <form action={deleteAction}>
+              <DropdownMenuItem
+                render={<button type="submit" />}
+                variant="destructive"
+                className="w-full"
+              >
+                <Trash2 className="size-4" />
+                Delete
+              </DropdownMenuItem>
+            </form>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </Card>
   );
 }
