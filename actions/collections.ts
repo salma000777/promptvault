@@ -1,21 +1,26 @@
 "use server";
 
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-
-import { createClient } from "@/lib/supabase/server";
 
 const collectionSchema = z.object({
   name: z
     .string()
     .trim()
     .min(1, "Collection name is required.")
-    .max(50, "Collection name must be 50 characters or fewer."),
+    .max(
+      50,
+      "Collection name must be 50 characters or fewer."
+    ),
 
   color: z
     .string()
-    .regex(/^#[0-9A-Fa-f]{6}$/, "Invalid collection color.")
+    .regex(
+      /^#[0-9A-Fa-f]{6}$/,
+      "Invalid collection color."
+    )
     .default("#3b82f6"),
 });
 
@@ -37,17 +42,29 @@ async function getAuthenticatedUser() {
   };
 }
 
-export async function createCollection(formData: FormData) {
-  const validation = collectionSchema.safeParse({
-    name: formData.get("name"),
-    color: formData.get("color") || "#3b82f6",
-  });
+function revalidateCollectionPages() {
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/prompts");
+  revalidatePath("/dashboard/collections");
+}
+
+export async function createCollection(
+  formData: FormData
+) {
+  const validation =
+    collectionSchema.safeParse({
+      name: formData.get("name"),
+      color:
+        formData.get("color") ||
+        "#3b82f6",
+    });
 
   if (!validation.success) {
     return {
       success: false,
       error:
-        validation.error.issues[0]?.message ??
+        validation.error.issues[0]
+          ?.message ??
         "Invalid collection.",
     };
   }
@@ -64,16 +81,19 @@ export async function createCollection(formData: FormData) {
     });
 
   if (error) {
-    console.error("Create collection failed:", error);
+    console.error(
+      "Create collection failed:",
+      error
+    );
 
     return {
       success: false,
-      error: "Could not create the collection.",
+      error:
+        "Could not create the collection.",
     };
   }
 
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/prompts");
+  revalidateCollectionPages();
 
   return {
     success: true,
@@ -84,16 +104,20 @@ export async function updateCollection(
   collectionId: string,
   formData: FormData
 ) {
-  const validation = collectionSchema.safeParse({
-    name: formData.get("name"),
-    color: formData.get("color") || "#3b82f6",
-  });
+  const validation =
+    collectionSchema.safeParse({
+      name: formData.get("name"),
+      color:
+        formData.get("color") ||
+        "#3b82f6",
+    });
 
   if (!validation.success) {
     return {
       success: false,
       error:
-        validation.error.issues[0]?.message ??
+        validation.error.issues[0]
+          ?.message ??
         "Invalid collection.",
     };
   }
@@ -111,16 +135,19 @@ export async function updateCollection(
     .eq("user_id", user.id);
 
   if (error) {
-    console.error("Update collection failed:", error);
+    console.error(
+      "Update collection failed:",
+      error
+    );
 
     return {
       success: false,
-      error: "Could not update the collection.",
+      error:
+        "Could not update the collection.",
     };
   }
 
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/prompts");
+  revalidateCollectionPages();
 
   return {
     success: true,
@@ -140,16 +167,19 @@ export async function deleteCollection(
     .eq("user_id", user.id);
 
   if (error) {
-    console.error("Delete collection failed:", error);
+    console.error(
+      "Delete collection failed:",
+      error
+    );
 
     return {
       success: false,
-      error: "Could not delete the collection.",
+      error:
+        "Could not delete the collection.",
     };
   }
 
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/prompts");
+  revalidateCollectionPages();
 
   return {
     success: true,
@@ -164,12 +194,13 @@ export async function assignPromptToCollection(
     await getAuthenticatedUser();
 
   if (collectionId) {
-    const { data: collection } = await supabase
-      .from("collections")
-      .select("id")
-      .eq("id", collectionId)
-      .eq("user_id", user.id)
-      .maybeSingle();
+    const { data: collection } =
+      await supabase
+        .from("collections")
+        .select("id")
+        .eq("id", collectionId)
+        .eq("user_id", user.id)
+        .maybeSingle();
 
     if (!collection) {
       return {
@@ -200,8 +231,7 @@ export async function assignPromptToCollection(
     };
   }
 
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/prompts");
+  revalidateCollectionPages();
 
   return {
     success: true,
