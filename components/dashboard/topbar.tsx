@@ -1,13 +1,14 @@
-import { signOut } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+"use client";
+
 import {
-  LogOut,
-  Plus,
+  Bell,
   Search,
-  Sparkles,
+  Settings,
 } from "lucide-react";
-import Link from "next/link";
+
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 type DashboardTopbarProps = {
   email: string;
@@ -16,56 +17,44 @@ type DashboardTopbarProps = {
 export function DashboardTopbar({
   email,
 }: DashboardTopbarProps) {
-  const initial =
-    email.trim().charAt(0).toUpperCase() || "U";
+  const firstLetter =
+    email.charAt(0).toUpperCase() || "U";
 
   return (
-    <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between gap-4 border-b bg-background/90 px-6 backdrop-blur">
-      <div className="relative hidden w-full max-w-md md:block">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+    <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
+      <div className="flex h-20 items-center justify-between gap-6 px-8">
+        <div className="relative hidden w-full max-w-md lg:block">
+          <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
 
-        <Input
-          type="search"
-          placeholder="Search prompts..."
-          className="pl-9"
-        />
-      </div>
-
-      <div className="ml-auto flex items-center gap-3">
-        <Link
-          href="/dashboard/studio"
-          className="hidden items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition hover:bg-muted sm:flex"
-        >
-          <Sparkles className="size-4" />
-          AI Studio
-        </Link>
-
-        <Link
-          href="/dashboard/prompts/new"
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
-        >
-          <Plus className="size-4" />
-          New Prompt
-        </Link>
-
-        <div
-          title={email}
-          className="flex size-10 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground"
-        >
-          {initial}
+          <Input
+            placeholder="Search prompts..."
+            className="h-11 rounded-xl border-slate-800 bg-slate-900 pl-11 text-white placeholder:text-slate-500 focus-visible:ring-primary"
+          />
         </div>
 
-        <form action={signOut}>
+        <div className="ml-auto flex items-center gap-3">
           <Button
-            type="submit"
-            variant="ghost"
             size="icon"
-            title="Sign out"
+            variant="ghost"
+            className="rounded-xl"
           >
-            <LogOut className="size-5" />
+            <Bell className="size-5" />
           </Button>
-        </form>
+
+          <Button
+            size="icon"
+            variant="ghost"
+            className="rounded-xl"
+          >
+            <Settings className="size-5" />
+          </Button>
+
+          <Avatar className="h-11 w-11 border border-slate-700">
+            <AvatarFallback className="bg-primary font-semibold text-primary-foreground">
+              {firstLetter}
+            </AvatarFallback>
+          </Avatar>
+        </div>
       </div>
     </header>
-  );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import {
+  ArrowRight,
   Clock3,
   FileText,
   Folder,
@@ -14,8 +15,8 @@ import {
   getDashboardStats,
 } from "@/lib/dashboard";
 
-import { StatCard } from "@/components/dashboard/stat-card";
 import { CollectionManager } from "@/components/collections/collection-manager";
+import { StatCard } from "@/components/dashboard/stat-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,54 +32,66 @@ export default async function DashboardPage() {
       getCollections(),
     ]);
 
+  const hour = new Date().getHours();
+
+  const greeting =
+    hour < 12
+      ? "Good morning"
+      : hour < 18
+      ? "Good afternoon"
+      : "Good evening";
+
   return (
-    <div className="mx-auto max-w-7xl space-y-8">
-      <section className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+    <div className="space-y-10">
+      <section className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-sm font-semibold text-primary">
-            Workspace overview
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Workspace
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            Dashboard
+          <h1 className="mt-3 text-5xl font-bold tracking-tight text-white">
+            {greeting} 👋
           </h1>
 
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Manage your prompt library,
-            organize collections, and improve
-            prompts with AI.
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
+            Welcome back to PromptVault.
+            Manage your prompts, organize collections
+            and optimize ideas with AI.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           <Link href="/dashboard/prompts/new">
-            <Button>
+            <Button size="lg">
               <Plus className="size-4" />
-              New prompt
+              New Prompt
             </Button>
           </Link>
 
           <Link href="/dashboard/studio">
-            <Button variant="outline">
+            <Button
+              size="lg"
+              variant="outline"
+            >
               <Sparkles className="size-4" />
-              Open AI Studio
+              AI Studio
             </Button>
           </Link>
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title="Total prompts"
+          title="Prompts"
           value={stats.totalPrompts}
-          description="Saved in your library"
+          description="Saved in your vault"
           icon={FileText}
         />
 
         <StatCard
           title="Favorites"
           value={stats.favoritePrompts}
-          description="Your starred prompts"
+          description="Pinned prompts"
           icon={Star}
         />
 
@@ -90,62 +103,56 @@ export default async function DashboardPage() {
         />
 
         <StatCard
-          title="Recently updated"
+          title="Updated"
           value={stats.recentPrompts}
-          description="Changed in the last 7 days"
+          description="Last 7 days"
           icon={Clock3}
         />
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.4fr_0.6fr]">
+      <section className="grid gap-6 xl:grid-cols-[1.5fr_0.5fr]">
         <CollectionManager
           collections={collections}
         />
 
-        <Card className="h-fit">
+        <Card className="border-slate-800 bg-slate-900">
           <CardHeader>
-            <CardTitle>
-              Quick actions
+            <CardTitle className="text-white">
+              Quick Actions
             </CardTitle>
           </CardHeader>
 
           <CardContent className="space-y-3">
-            <Link
-              href="/dashboard/prompts"
-              className="block"
-            >
+            <Link href="/dashboard/prompts">
               <Button
+                className="w-full justify-between"
                 variant="outline"
-                className="w-full justify-start"
               >
-                <FileText className="size-4" />
-                Browse prompt library
+                Browse Prompt Library
+
+                <ArrowRight className="size-4" />
               </Button>
             </Link>
 
-            <Link
-              href="/dashboard/prompts/new"
-              className="block"
-            >
+            <Link href="/dashboard/prompts/new">
               <Button
+                className="w-full justify-between"
                 variant="outline"
-                className="w-full justify-start"
               >
+                Create Prompt
+
                 <Plus className="size-4" />
-                Create a prompt
               </Button>
             </Link>
 
-            <Link
-              href="/dashboard/studio"
-              className="block"
-            >
+            <Link href="/dashboard/studio">
               <Button
+                className="w-full justify-between"
                 variant="outline"
-                className="w-full justify-start"
               >
+                AI Studio
+
                 <Sparkles className="size-4" />
-                Optimize with Gemini
               </Button>
             </Link>
           </CardContent>

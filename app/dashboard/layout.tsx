@@ -19,17 +19,21 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <DashboardSidebar />
+    <div className="min-h-screen bg-slate-950">
+      <div className="flex min-h-screen">
+        <DashboardSidebar />
 
-      <div className="min-w-0 flex-1">
-        <DashboardTopbar
-          email={user.email ?? "user"}
-        />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <DashboardTopbar
+            email={user.email ?? "user"}
+          />
 
-        <main className="p-6 lg:p-8">
-          {children}
-        </main>
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto w-full max-w-7xl px-6 py-8 lg:px-10 lg:py-10">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );

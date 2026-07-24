@@ -1,10 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-
 type StatCardProps = {
   title: string;
   value: number;
@@ -19,26 +14,28 @@ export function StatCard({
   icon: Icon,
 }: StatCardProps) {
   return (
-    <Card>
-      <CardContent className="flex items-start justify-between gap-4 p-6">
+    <div className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30">
+      <div className="absolute -right-10 -top-10 size-28 rounded-full bg-primary/10 blur-3xl transition group-hover:bg-primary/20" />
+
+      <div className="relative flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-muted-foreground">
+          <p className="text-sm font-medium text-slate-400">
             {title}
           </p>
 
-          <p className="mt-2 text-3xl font-bold tracking-tight">
-            {value.toLocaleString()}
+          <p className="mt-4 text-4xl font-bold tracking-tight text-white">
+            {value}
           </p>
 
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-2 text-sm text-slate-500">
             {description}
           </p>
         </div>
 
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-          <Icon className="size-5 text-primary" />
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
+          <Icon className="size-5" />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
