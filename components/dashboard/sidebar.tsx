@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Folder,
   LayoutDashboard,
   Library,
   Settings,
@@ -23,6 +24,11 @@ const navigation = [
     icon: Library,
   },
   {
+    name: "Collections",
+    href: "/dashboard/collections",
+    icon: Folder,
+  },
+  {
     name: "AI Studio",
     href: "/dashboard/studio",
     icon: Sparkles,
@@ -38,13 +44,13 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden min-h-screen w-72 shrink-0 border-r border-slate-800 bg-slate-950 lg:flex lg:flex-col">
-      <div className="border-b border-slate-800 px-5 py-5">
+    <aside className="hidden min-h-screen w-72 shrink-0 border-r border-white/[0.06] bg-[#0b0d1a] lg:flex lg:flex-col">
+      <div className="border-b border-white/[0.06] px-5 py-5">
         <Logo href size="sm" />
       </div>
 
       <nav className="flex-1 space-y-1.5 p-4">
-        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+        <p className="px-3 pb-2 pt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600">
           Workspace
         </p>
 
@@ -54,23 +60,29 @@ export function DashboardSidebar() {
           const active =
             pathname === item.href ||
             (item.href !== "/dashboard" &&
-              pathname.startsWith(`${item.href}/`));
+              pathname.startsWith(
+                `${item.href}/`
+              ));
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all duration-200 ${
+              className={`group relative flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-all duration-200 ${
                 active
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/15"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                  ? "border border-violet-400/20 bg-violet-500/10 text-violet-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_12px_30px_rgba(76,29,149,0.08)]"
+                  : "border border-transparent text-slate-400 hover:border-white/[0.04] hover:bg-white/[0.035] hover:text-slate-100"
               }`}
             >
+              {active ? (
+                <span className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-violet-400" />
+              ) : null}
+
               <Icon
-                className={`size-5 transition ${
+                className={`size-[18px] shrink-0 transition-colors ${
                   active
-                    ? "text-primary-foreground"
-                    : "text-slate-500 group-hover:text-white"
+                    ? "text-violet-300"
+                    : "text-slate-500 group-hover:text-slate-300"
                 }`}
               />
 
@@ -80,15 +92,20 @@ export function DashboardSidebar() {
         })}
       </nav>
 
-      <div className="border-t border-slate-800 p-4">
-        <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+      <div className="p-4">
+        <div className="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-[linear-gradient(145deg,rgba(139,92,246,0.12),rgba(255,255,255,0.025))] p-4 shadow-xl shadow-violet-950/10">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-8 -top-8 size-28 rounded-full bg-violet-500/15 blur-2xl"
+          />
+
+          <div className="relative flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-violet-300/20 bg-violet-500/15 text-violet-200">
               <Sparkles className="size-4" />
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-slate-100">
                 PromptVault Pro
               </p>
 
@@ -98,13 +115,14 @@ export function DashboardSidebar() {
             </div>
           </div>
 
-          <p className="mt-4 text-xs leading-5 text-slate-400">
-            Get AI optimization, advanced search and future premium tools.
+          <p className="relative mt-4 text-xs leading-5 text-slate-400">
+            Get AI optimization, advanced
+            search and future premium tools.
           </p>
 
           <Link
             href="/pricing"
-            className="mt-4 flex h-9 items-center justify-center rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground transition hover:opacity-90"
+            className="relative mt-4 flex h-10 items-center justify-center rounded-xl border border-violet-400/25 bg-violet-500/10 px-4 text-xs font-semibold text-violet-100 transition hover:bg-violet-500/20"
           >
             View plans
           </Link>

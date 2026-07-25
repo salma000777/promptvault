@@ -1,13 +1,19 @@
+import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
+
+import { CommandProvider } from "@/components/command/command-provider";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardTopbar } from "@/components/dashboard/topbar";
+import { getCommandPrompts } from "@/lib/command";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+
+type DashboardLayoutProps = {
+  children: ReactNode;
+};
 
 export default async function DashboardLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: DashboardLayoutProps) {
   const supabase = await createClient();
 
   const {
@@ -18,23 +24,27 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+  const prompts = await getCommandPrompts();
+
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="flex min-h-screen">
-        <DashboardSidebar />
+    <CommandProvider prompts={prompts}>
+      <div className="min-h-screen bg-slate-950">
+        <div className="flex min-h-screen">
+          <DashboardSidebar />
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <DashboardTopbar
-            email={user.email ?? "user"}
-          />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <DashboardTopbar
+              email={user.email ?? "user"}
+            />
 
-          <main className="flex-1 overflow-y-auto">
-            <div className="mx-auto w-full max-w-7xl px-6 py-8 lg:px-10 lg:py-10">
-              {children}
-            </div>
-          </main>
+            <main className="flex-1 overflow-y-auto">
+              <div className="mx-auto w-full max-w-7xl px-6 py-8 lg:px-10 lg:py-10">
+                {children}
+              </div>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </CommandProvider>
   );
 }
