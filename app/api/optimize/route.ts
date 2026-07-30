@@ -1,17 +1,12 @@
-import {
-  optimizePromptRequestSchema,
-} from "@/lib/ai/schemas";
-import {
-  optimizePromptWithGemini,
-} from "@/lib/ai/gemini";
+import { optimizePromptRequestSchema } from "@/lib/ai/schemas";
+import { optimizePromptWithGemini } from "@/lib/ai/providers/gemini";
+import { optimizePromptWithOpenRouter } from "@/lib/ai/providers/openrouter";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-export async function POST(
-  request: Request
-) {
+export async function POST(request: Request) {
   try {
     const supabase = await createClient();
 
@@ -23,8 +18,7 @@ export async function POST(
     if (authError || !user) {
       return NextResponse.json(
         {
-          error:
-            "You must be signed in to optimize prompts.",
+          error: "You must be signed in to optimize prompts.",
         },
         {
           status: 401,
@@ -48,9 +42,7 @@ export async function POST(
     }
 
     const validation =
-      optimizePromptRequestSchema.safeParse(
-        requestBody
-      );
+      optimizePromptRequestSchema.safeParse(requestBody);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -65,10 +57,21 @@ export async function POST(
       );
     }
 
-    const result =
-      await optimizePromptWithGemini(
-        validation.data.prompt
+    const prompt = validation.data.prompt;
+
+    let result;
+
+    try {
+      console.log("Using Gemini...");
+      result = await optimizePromptWithGemini(prompt);
+    } catch (error) {
+      console.warn(
+        "Gemini failed. Falling back to OpenRouter.",
+        error
       );
+
+      result = await optimizePromptWithOpenRouter(prompt);
+    }
 
     return NextResponse.json({
       data: result,

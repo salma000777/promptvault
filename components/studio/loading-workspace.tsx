@@ -1,6 +1,8 @@
-"use client";
-
 import { Check, LoaderCircle, Sparkles } from "lucide-react";
+
+type LoadingWorkspaceProps = {
+  activeStep: number;
+};
 
 const LOADING_STEPS = [
   "Understanding your intent",
@@ -9,24 +11,23 @@ const LOADING_STEPS = [
   "Generating the optimized version",
 ];
 
-type LoadingWorkspaceProps = {
-  activeStep: number;
-};
-
 export default function LoadingWorkspace({
   activeStep,
 }: LoadingWorkspaceProps) {
   return (
     <div className="overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.025] shadow-2xl shadow-black/20 backdrop-blur-2xl">
       <div className="flex min-h-[690px] flex-col justify-between p-6 sm:p-8">
+
         <div className="flex items-center justify-between">
+
           <div className="flex items-center gap-3">
+
             <div className="flex size-10 items-center justify-center rounded-xl border border-violet-400/20 bg-violet-500/10">
               <LoaderCircle className="size-5 animate-spin text-violet-300" />
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold">
                 PromptVault AI
               </p>
 
@@ -34,16 +35,21 @@ export default function LoadingWorkspace({
                 Analysis in progress
               </p>
             </div>
+
           </div>
 
           <span className="rounded-full border border-violet-400/15 bg-violet-500/10 px-3 py-1 text-[11px] font-medium text-violet-300">
             Processing
           </span>
+
         </div>
 
         <div className="mx-auto w-full max-w-md py-16">
+
           <div className="mb-8 flex justify-center">
+
             <div className="relative flex size-24 items-center justify-center">
+
               <div className="absolute inset-0 animate-pulse rounded-full bg-violet-500/15 blur-2xl" />
 
               <div className="absolute inset-2 rounded-full border border-violet-400/15" />
@@ -51,11 +57,14 @@ export default function LoadingWorkspace({
               <div className="absolute inset-5 rounded-full border border-violet-400/20" />
 
               <Sparkles className="relative size-8 text-violet-300" />
+
             </div>
+
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-white">
+
+            <h2 className="text-2xl font-semibold tracking-tight">
               Engineering a stronger prompt
             </h2>
 
@@ -64,14 +73,21 @@ export default function LoadingWorkspace({
               constraints, structure, and expected
               output quality.
             </p>
+
           </div>
 
           <div className="mt-10 space-y-3">
+
             {LOADING_STEPS.map((step, index) => {
-              const isComplete = index < activeStep;
-              const isActive = index === activeStep;
+
+              const isComplete =
+                index < activeStep;
+
+              const isActive =
+                index === activeStep;
 
               return (
+
                 <div
                   key={step}
                   className={`flex items-center gap-3 rounded-2xl border px-4 py-3.5 transition-all duration-500 ${
@@ -82,6 +98,7 @@ export default function LoadingWorkspace({
                         : "border-transparent bg-transparent opacity-40"
                   }`}
                 >
+
                   <div
                     className={`flex size-7 shrink-0 items-center justify-center rounded-full border ${
                       isComplete
@@ -91,6 +108,7 @@ export default function LoadingWorkspace({
                           : "border-white/10 bg-white/[0.03]"
                     }`}
                   >
+
                     {isComplete ? (
                       <Check className="size-3.5 text-emerald-400" />
                     ) : isActive ? (
@@ -98,26 +116,33 @@ export default function LoadingWorkspace({
                     ) : (
                       <span className="size-1.5 rounded-full bg-muted-foreground/50" />
                     )}
+
                   </div>
 
                   <span
                     className={`text-sm ${
                       isActive
-                        ? "font-medium text-white"
+                        ? "font-medium text-foreground"
                         : "text-muted-foreground"
                     }`}
                   >
                     {step}
                   </span>
+
                 </div>
+
               );
+
             })}
+
           </div>
-                  </div>
+
+        </div>
 
         <p className="text-center text-xs text-muted-foreground/60">
           This usually takes only a few seconds.
         </p>
+
       </div>
     </div>
   );
