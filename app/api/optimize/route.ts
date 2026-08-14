@@ -1,24 +1,37 @@
-import { optimizePromptRequestSchema } from "@/lib/ai/schemas";
-import { optimizePromptWithGemini } from "@/lib/ai/providers/gemini";
-import { optimizePromptWithOpenRouter } from "@/lib/ai/providers/openrouter";
-import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+
+import {
+  optimizePromptRequestSchema,
+} from "@/lib/ai/schemas";
+
+import {
+  optimizePrompt,
+} from "@/lib/ai/provider";
+
+import {
+  createClient,
+} from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request
+) {
   try {
-    const supabase = await createClient();
+    const supabase =
+      await createClient();
 
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } =
+      await supabase.auth.getUser();
 
     if (authError || !user) {
       return NextResponse.json(
         {
-          error: "You must be signed in to optimize prompts.",
+          error:
+            "You must be signed in to optimize prompts.",
         },
         {
           status: 401,
@@ -29,11 +42,13 @@ export async function POST(request: Request) {
     let requestBody: unknown;
 
     try {
-      requestBody = await request.json();
+      requestBody =
+        await request.json();
     } catch {
       return NextResponse.json(
         {
-          error: "Invalid request body.",
+          error:
+            "Invalid request body.",
         },
         {
           status: 400,
@@ -42,13 +57,16 @@ export async function POST(request: Request) {
     }
 
     const validation =
-      optimizePromptRequestSchema.safeParse(requestBody);
+      optimizePromptRequestSchema.safeParse(
+        requestBody
+      );
 
     if (!validation.success) {
       return NextResponse.json(
         {
           error:
-            validation.error.issues[0]?.message ??
+            validation.error.issues[0]
+              ?.message ??
             "Invalid prompt.",
         },
         {
@@ -57,21 +75,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const prompt = validation.data.prompt;
-
-    let result;
-
-    try {
-      console.log("Using Gemini...");
-      result = await optimizePromptWithGemini(prompt);
-    } catch (error) {
-      console.warn(
-        "Gemini failed. Falling back to OpenRouter.",
-        error
+    const result =
+      await optimizePrompt(
+        validation.data.prompt
       );
-
-      result = await optimizePromptWithOpenRouter(prompt);
-    }
 
     return NextResponse.json({
       data: result,
@@ -92,7 +99,7 @@ export async function POST(request: Request) {
         error: message,
       },
       {
-        status: 500,
+        status: 503,
       }
     );
   }
