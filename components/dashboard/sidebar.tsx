@@ -60,9 +60,7 @@ export function DashboardSidebar() {
           const active =
             pathname === item.href ||
             (item.href !== "/dashboard" &&
-              pathname.startsWith(
-                `${item.href}/`
-              ));
+              pathname.startsWith(`${item.href}/`));
 
           return (
             <Link
@@ -93,7 +91,7 @@ export function DashboardSidebar() {
       </nav>
 
       <div className="p-4">
-        <div className="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-[linear-gradient(145deg,rgba(139,92,246,0.12),rgba(255,255,255,0.025))] p-4 shadow-xl shadow-violet-950/10">
+        <div className="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-[linear-gradient(145deg,rgba(139,92,246,0.14),rgba(255,255,255,0.025))] p-4 shadow-xl shadow-violet-950/10">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-8 -top-8 size-28 rounded-full bg-violet-500/15 blur-2xl"
@@ -109,22 +107,21 @@ export function DashboardSidebar() {
                 PromptVault Pro
               </p>
 
-              <p className="text-xs text-slate-500">
-                Unlock the full workspace
+              <p className="text-xs text-violet-300/80">
+                Unlock more from your workspace
               </p>
             </div>
           </div>
 
           <p className="relative mt-4 text-xs leading-5 text-slate-400">
-            Get AI optimization, advanced
-            search and future premium tools.
+            Unlock AI optimization, higher limits, and premium tools.
           </p>
 
           <Link
             href="/pricing"
-            className="relative mt-4 flex h-10 items-center justify-center rounded-xl border border-violet-400/25 bg-violet-500/10 px-4 text-xs font-semibold text-violet-100 transition hover:bg-violet-500/20"
+            className="relative mt-4 flex h-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 text-xs font-semibold text-white shadow-lg shadow-violet-950/20 transition hover:opacity-90"
           >
-            View plans
+            Upgrade to Pro
           </Link>
         </div>
       </div>

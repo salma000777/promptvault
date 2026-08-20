@@ -39,6 +39,42 @@ export async function POST(
       );
     }
 
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("profiles")
+        .select("is_pro")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (profileError) {
+      console.error(
+        "Failed to check Pro access:",
+        profileError
+      );
+
+      return NextResponse.json(
+        {
+          error:
+            "Unable to verify your Pro access.",
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+
+    if (!profile?.is_pro) {
+      return NextResponse.json(
+        {
+          error:
+            "AI optimization is a Pro feature. Upgrade to Pro to use Studio.",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
     let requestBody: unknown;
 
     try {

@@ -4,11 +4,29 @@ import {
   BrainCircuit,
   Sparkles,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let isPro = false;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_pro")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    isPro = profile?.is_pro === true;
+  }
+
   return (
     <div className="relative isolate mx-auto max-w-7xl px-6 pb-24 pt-4 lg:px-8">
-      {/* Background Glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-violet-500/[0.07] blur-[180px]"
@@ -24,7 +42,6 @@ export default function StudioPage() {
         className="pointer-events-none absolute -right-48 top-56 h-[420px] w-[420px] rounded-full bg-sky-500/[0.04] blur-[170px]"
       />
 
-      {/* Hero */}
       <header className="relative overflow-hidden rounded-[34px] border border-white/10 bg-gradient-to-b from-white/[0.055] to-white/[0.02] p-8 shadow-[0_40px_120px_rgba(0,0,0,0.35)] backdrop-blur-3xl lg:p-12">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.12),transparent_60%)]" />
 
@@ -98,9 +115,8 @@ export default function StudioPage() {
         </div>
       </header>
 
-      {/* Workspace */}
       <section className="relative mt-12">
-        <PromptOptimizer />
+        <PromptOptimizer isPro={isPro} />
       </section>
     </div>
   );

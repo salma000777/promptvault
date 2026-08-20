@@ -43,7 +43,11 @@ const LOADING_STEPS = [
   "Generating the optimized version",
 ];
 
-export function PromptOptimizer() {
+export function PromptOptimizer({
+  isPro,
+}: {
+  isPro: boolean;
+}) {
   const [prompt, setPrompt] = useState("");
 
   const [result, setResult] =
@@ -91,8 +95,16 @@ export function PromptOptimizer() {
     event.preventDefault();
 
     const cleanPrompt = prompt.trim();
+    
+    if (!isPro) {
+    setError(
+      "AI optimization is a Pro feature. Upgrade to Pro to use Studio."
+     );
 
-    if (cleanPrompt.length < 10) {
+     return;
+   }
+   
+   if (cleanPrompt.length < 10) {
       setError(
         "Enter a prompt containing at least 10 characters."
       );
