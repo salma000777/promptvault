@@ -619,7 +619,7 @@ export function PromptOptimizer({
         </div>
 
         {/* =====================================================
-            PRO CTA
+            PRO STATUS
         ====================================================== */}
 
         <section className="mt-4 overflow-hidden rounded-[24px] border border-violet-400/[0.12] bg-[linear-gradient(110deg,rgba(124,58,237,.12),rgba(255,255,255,.025),rgba(168,85,247,.07))]">
@@ -631,40 +631,31 @@ export function PromptOptimizer({
 
               <div>
                 <p className="font-semibold text-white">
-                  Upgrade to Pro
+                  {isPro ? "You're on Pro" : "Upgrade to Pro"}
                 </p>
 
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Higher limits, priority AI
-                  access and advanced features.
+                  {isPro
+                    ? "AI prompt optimization is unlocked."
+                    : "Unlock AI-powered prompt optimization."}
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-              {[
-                "Higher AI usage limits",
-                "Advanced prompt analysis",
-                "Priority AI processing",
-                "Export & history access",
-              ].map((feature) => (
-                <span
-                  key={feature}
-                  className="flex items-center gap-2 text-xs text-muted-foreground"
-                >
-                  <Check className="size-3.5 text-violet-300" />
-                  {feature}
-                </span>
-              ))}
-            </div>
-
-            <Link
-              href="/pricing"
-              className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 font-semibold text-white shadow-lg shadow-violet-950/20 hover:opacity-90"
-            >
-              Upgrade to Pro
-              <ArrowRight className="size-4" />
-            </Link>
+            {!isPro ? (
+              <Link
+                href="/pricing"
+                className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 font-semibold text-white shadow-lg shadow-violet-950/20 hover:opacity-90"
+              >
+                Upgrade to Pro
+                <ArrowRight className="size-4" />
+              </Link>
+            ) : (
+              <div className="flex items-center gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] px-4 py-2.5 text-sm font-medium text-emerald-300">
+                <CheckCircle2 className="size-4" />
+                Pro unlocked
+              </div>
+            )}
           </div>
         </section>
       </div>
