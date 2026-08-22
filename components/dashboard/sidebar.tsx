@@ -40,7 +40,11 @@ const navigation = [
   },
 ];
 
-export function DashboardSidebar() {
+export function DashboardSidebar({
+  isPro,
+}: {
+  isPro: boolean;
+}) {
   const pathname = usePathname();
 
   return (
@@ -104,25 +108,34 @@ export function DashboardSidebar() {
 
             <div>
               <p className="text-sm font-semibold text-slate-100">
-                PromptVault Pro
+                {isPro ? "PromptVault Pro" : "PromptVault Pro"}
               </p>
 
               <p className="text-xs text-violet-300/80">
-                Unlock more from your workspace
+                {isPro ? "Your Pro workspace" : "Unlock more from your workspace"}
               </p>
             </div>
           </div>
 
           <p className="relative mt-4 text-xs leading-5 text-slate-400">
-            Unlock AI optimization, higher limits, and premium tools.
+            {isPro
+              ? "AI prompt optimization is unlocked."
+              : "Unlock AI prompt optimization with Pro."}
           </p>
 
-          <Link
-            href="/pricing"
-            className="relative mt-4 flex h-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 text-xs font-semibold text-white shadow-lg shadow-violet-950/20 transition hover:opacity-90"
-          >
-            Upgrade to Pro
-          </Link>
+          {isPro ? (
+            <div className="relative mt-4 flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] px-4 text-xs font-semibold text-emerald-300">
+              <Sparkles className="size-3.5" />
+              Pro unlocked
+            </div>
+          ) : (
+            <Link
+              href="/pricing"
+              className="relative mt-4 flex h-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 text-xs font-semibold text-white shadow-lg shadow-violet-950/20 transition hover:opacity-90"
+            >
+              Upgrade to Pro
+            </Link>
+          )}
         </div>
       </div>
     </aside>

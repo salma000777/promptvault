@@ -24,13 +24,21 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_pro")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const isPro = profile?.is_pro === true;
+
   const prompts = await getCommandPrompts();
 
   return (
     <CommandProvider prompts={prompts}>
       <div className="min-h-screen bg-slate-950">
         <div className="flex min-h-screen">
-          <DashboardSidebar />
+          <DashboardSidebar isPro={isPro} />
 
           <div className="flex min-w-0 flex-1 flex-col">
             <DashboardTopbar
